@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業促銷訂單收集儀表板</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header glass-panel">
+            <h1>企業促銷訂單收集儀表板</h1>
+            <div class="status-indicator">
+                <span class="dot live"></span>
+                <span>即時資料連線中 (預覽)</span>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- KPI Cards Section -->
+            <section class="kpi-section">
+                <div class="kpi-card glass-panel">
+                    <div class="kpi-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>目前總業績</h3>
+                        <h2 id="total-sales">NT$ 0</h2>
+                    </div>
+                </div>
+
+                <div class="kpi-card glass-panel">
+                    <div class="kpi-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="kpi-content" style="width: 100%;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <h3>目標金額</h3>
+                            <div class="goal-input-container">
+                                <span style="color: var(--text-secondary); font-size: 0.875rem;">NT$</span>
+                                <input type="number" id="goal-amount-input" class="glass-input" value="1000000" min="0"
+                                    step="1000" placeholder="輸入目標">
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                            <h2 id="achievement-rate">0.00%</h2>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">達成率</span>
+                        </div>
+                        <div style="margin-top: 0.25rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            <span id="goal-difference-prefix">還有差距: </span><span id="goal-difference-amount"
+                                style="font-weight: 600;">NT$ 0</span>
+                        </div>
+                        <!-- Progress bar -->
+                        <div class="progress-bar-container">
+                            <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-card glass-panel flex-2">
+                    <div class="chart-header">
+                        <h3>依客戶分類業績金額</h3>
+                        <div class="sort-container">
+                            <label for="sort-select">排列方式：</label>
+                            <select id="sort-select" class="glass-select">
+                                <option value="amount-desc">金額：由大到小</option>
+                                <option value="amount-asc">金額：由小到大</option>
+                                <option value="date-desc">時間：由新到舊</option>
+                                <option value="date-asc">時間：由舊到新</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="salesByCustomerChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Customer Details Modal -->
+    <div id="customer-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2 id="modal-customer-name">客戶名稱</h2>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-container">
+                    <table class="details-table">
+                        <thead>
+                            <tr>
+                                <th>商品型號</th>
+                                <th>價格</th>
+                                <th>數量</th>
+                                <th>小計</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-table-body">
+                            <!-- Rows inserted via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <h3>總金額: <span id="modal-total-amount">NT$ 0</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+
+</html>
